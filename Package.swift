@@ -8,7 +8,7 @@ let package = Package(
         .macOS(.v26),
         .iOS(.v26),
         .tvOS(.v26),
-        .watchOS(.v26),
+        .watchOS(.v26)
     ],
     products: [
         .library(
@@ -24,15 +24,8 @@ let package = Package(
             name: "RFC 8058",
             dependencies: [
                 .product(name: "RFC 3987", package: "swift-rfc-3987")
-            ]
-        ),
-        .testTarget(
-            name: "RFC 8058".tests,
-            dependencies: [
-                "RFC 8058",
-                .product(name: "RFC 3987 Foundation", package: "swift-rfc-3987")
-            ]
-        ),
+    ]
+        )
     ],
     swiftLanguageModes: [.v6]
 )
@@ -48,6 +41,6 @@ for target in package.targets where ![.system, .binary, .plugin].contains(target
         existing + [
             .enableUpcomingFeature("ExistentialAny"),
             .enableUpcomingFeature("InternalImportsByDefault"),
-            .enableUpcomingFeature("MemberImportVisibility"),
+            .enableUpcomingFeature("MemberImportVisibility")
         ]
 }
