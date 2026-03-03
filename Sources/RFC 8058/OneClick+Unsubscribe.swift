@@ -117,7 +117,7 @@ extension RFC_8058.OneClick {
         public init(
             baseURL: RFC_3987.IRI,
             opaqueToken: String
-        ) throws {
+        ) throws(RFC_8058.OneClickError) {
             // RFC 8058 Section 3.1: MUST use HTTPS
             guard baseURL.value.hasPrefix("https://") else {
                 throw RFC_8058.OneClickError.requiresHTTPS
@@ -158,7 +158,7 @@ extension RFC_8058.OneClick {
         public init(
             baseURL: any RFC_3987.IRI.Representable,
             opaqueToken: String
-        ) throws {
+        ) throws(RFC_8058.OneClickError) {
             try self.init(baseURL: baseURL.iri, opaqueToken: opaqueToken)
         }
 
