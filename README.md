@@ -1,6 +1,6 @@
 # Swift RFC 8058
 
-[![CI](https://github.com/swift-standards/swift-rfc-8058/workflows/CI/badge.svg)](https://github.com/swift-standards/swift-rfc-8058/actions/workflows/ci.yml)
+[![CI](https://github.com/swift-ietf/swift-rfc-8058/workflows/CI/badge.svg)](https://github.com/swift-ietf/swift-rfc-8058/actions/workflows/ci.yml)
 ![Development Status](https://img.shields.io/badge/status-active--development-blue.svg)
 
 Swift implementation of RFC 8058: Signaling One-Click Functionality for List Email Headers
@@ -27,7 +27,7 @@ This package provides a Swift implementation of the one-click unsubscribe mechan
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/swift-standards/swift-rfc-8058", from: "0.1.0")
+    .package(url: "https://github.com/swift-ietf/swift-rfc-8058", from: "0.2.4")
 ]
 ```
 
@@ -245,9 +245,9 @@ emailHeaders.merge([String: String](oneClickUnsubscribe: oneClick)) { _, new in 
 
 ## Related Packages
 
-- [swift-rfc-2369](https://github.com/swift-standards/swift-rfc-2369) - List email headers (foundation for RFC 8058)
-- [swift-rfc-3987](https://github.com/swift-standards/swift-rfc-3987) - IRI implementation
-- [swift-rfc-6068](https://github.com/swift-standards/swift-rfc-6068) - The 'mailto' URI Scheme (fallback unsubscribe)
+- [swift-rfc-2369](https://github.com/swift-ietf/swift-rfc-2369) - List email headers (foundation for RFC 8058)
+- [swift-rfc-3987](https://github.com/swift-ietf/swift-rfc-3987) - IRI implementation
+- [swift-rfc-6068](https://github.com/swift-ietf/swift-rfc-6068) - The 'mailto' URI Scheme (fallback unsubscribe)
 
 ## Why RFC 8058 Matters
 
