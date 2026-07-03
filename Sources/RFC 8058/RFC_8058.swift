@@ -1,4 +1,3 @@
-public import Foundation
 @_exported public import RFC_3987
 
 /// RFC 8058: Signaling One-Click Functionality for List Email Headers
@@ -71,10 +70,10 @@ public enum RFC_8058 {
     }
 }
 
-// MARK: - LocalizedError Conformance
+// MARK: - CustomStringConvertible Conformance
 
-extension RFC_8058.OneClickError: LocalizedError {
-    public var errorDescription: String? {
+extension RFC_8058.OneClickError: CustomStringConvertible {
+    public var description: String {
         switch self {
         case .requiresHTTPS:
             return "One-click unsubscribe requires HTTPS URI per RFC 8058 Section 3.1"
