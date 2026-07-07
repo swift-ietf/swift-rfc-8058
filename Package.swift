@@ -30,6 +30,7 @@ let package = Package(
             name: "RFC 8058 Tests",
             dependencies: [
                 "RFC 8058",
+                .product(name: "RFC 3987 Foundation", package: "swift-rfc-3987"),
             ]
         ),
     ],
