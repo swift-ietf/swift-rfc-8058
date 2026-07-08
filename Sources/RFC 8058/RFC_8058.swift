@@ -61,6 +61,9 @@
 ///
 /// This module re-exports RFC 3987 (IRI) types for convenience.
 public enum RFC_8058 {
+}
+
+extension RFC_8058 {
     /// Errors that can occur when working with one-click unsubscribe
     public enum OneClickError: Error, Hashable, Sendable {
         case requiresHTTPS

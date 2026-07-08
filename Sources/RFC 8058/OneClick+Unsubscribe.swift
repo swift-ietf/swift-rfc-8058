@@ -161,51 +161,53 @@ extension RFC_8058.OneClick {
         ) throws(RFC_8058.OneClickError) {
             try self.init(baseURL: baseURL.iri, opaqueToken: opaqueToken)
         }
+    }
+}
 
-        /// Validates a token using constant-time comparison
-        ///
-        /// Uses constant-time string comparison to prevent timing attacks that could
-        /// be used to guess valid tokens.
-        ///
-        /// Per RFC 8058 Section 3.2 (Security Considerations):
-        ///
-        /// > The URI SHOULD include an opaque identifier or another hard-to-forge
-        /// > component [...] This is important because an attacker could send
-        /// > fraudulent one-click unsubscribe requests for victim email addresses.
-        ///
-        /// - Parameter token: The token to validate (typically from incoming HTTP request)
-        /// - Returns: `true` if token matches, `false` otherwise
-        ///
-        /// ## Example
-        ///
-        /// ```swift
-        /// // In your HTTP handler
-        /// func handleUnsubscribe(request: Request) async throws -> Response {
-        ///     let tokenFromURL = request.parameters.get("token")!
-        ///
-        ///     // Retrieve stored OneClick.Unsubscribe for this request
-        ///     let oneClick = try await getOneClickUnsubscribe(from: tokenFromURL)
-        ///
-        ///     guard oneClick.validate(token: tokenFromURL) else {
-        ///         throw Abort(.unauthorized, reason: "Invalid unsubscribe token")
-        ///     }
-        ///
-        ///     // Process unsubscription
-        ///     try await unsubscribe(token: tokenFromURL)
-        ///
-        ///     return Response(status: .ok)
-        /// }
-        /// ```
-        public func validate(token: String) -> Bool {
-            // Constant-time comparison to prevent timing attacks
-            guard token.count == opaqueToken.count else { return false }
+extension RFC_8058.OneClick.Unsubscribe {
+    /// Validates a token using constant-time comparison
+    ///
+    /// Uses constant-time string comparison to prevent timing attacks that could
+    /// be used to guess valid tokens.
+    ///
+    /// Per RFC 8058 Section 3.2 (Security Considerations):
+    ///
+    /// > The URI SHOULD include an opaque identifier or another hard-to-forge
+    /// > component [...] This is important because an attacker could send
+    /// > fraudulent one-click unsubscribe requests for victim email addresses.
+    ///
+    /// - Parameter token: The token to validate (typically from incoming HTTP request)
+    /// - Returns: `true` if token matches, `false` otherwise
+    ///
+    /// ## Example
+    ///
+    /// ```swift
+    /// // In your HTTP handler
+    /// func handleUnsubscribe(request: Request) async throws -> Response {
+    ///     let tokenFromURL = request.parameters.get("token")!
+    ///
+    ///     // Retrieve stored OneClick.Unsubscribe for this request
+    ///     let oneClick = try await getOneClickUnsubscribe(from: tokenFromURL)
+    ///
+    ///     guard oneClick.validate(token: tokenFromURL) else {
+    ///         throw Abort(.unauthorized, reason: "Invalid unsubscribe token")
+    ///     }
+    ///
+    ///     // Process unsubscription
+    ///     try await unsubscribe(token: tokenFromURL)
+    ///
+    ///     return Response(status: .ok)
+    /// }
+    /// ```
+    public func validate(token: String) -> Bool {
+        // Constant-time comparison to prevent timing attacks
+        guard token.count == opaqueToken.count else { return false }
 
-            var result = 0
-            for (a, b) in zip(token.utf8, opaqueToken.utf8) {
-                result |= Int(a ^ b)
-            }
-            return result == 0
+        var result = 0
+        for (a, b) in zip(token.utf8, opaqueToken.utf8) {
+            result |= Int(a ^ b)
         }
+        return result == 0
     }
 }
 
