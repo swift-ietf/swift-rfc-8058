@@ -31,6 +31,17 @@ dependencies: [
 ]
 ```
 
+Add the product to a target that needs it:
+
+```swift
+.target(
+    name: "YourTarget",
+    dependencies: [
+        .product(name: "RFC 8058", package: "swift-rfc-8058")
+    ]
+)
+```
+
 ## Usage
 
 ### Creating One-Click Unsubscribe
