@@ -1,7 +1,7 @@
 # Swift RFC 8058
 
-[![CI](https://github.com/swift-ietf/swift-rfc-8058/workflows/CI/badge.svg)](https://github.com/swift-ietf/swift-rfc-8058/actions/workflows/ci.yml)
 ![Development Status](https://img.shields.io/badge/status-active--development-blue.svg)
+[![CI](https://github.com/swift-ietf/swift-rfc-8058/workflows/CI/badge.svg)](https://github.com/swift-ietf/swift-rfc-8058/actions/workflows/ci.yml)
 
 Swift implementation of RFC 8058: Signaling One-Click Functionality for List Email Headers
 
