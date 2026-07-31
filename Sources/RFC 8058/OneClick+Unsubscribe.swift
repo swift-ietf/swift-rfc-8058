@@ -139,7 +139,10 @@ extension RFC_8058.OneClick {
                 fullURIString = "\(baseURL.value)/\(opaqueToken)"
             }
 
-            guard let uri = try? RFC_3987.IRI(fullURIString) else {
+            let uri: RFC_3987.IRI
+            do throws(RFC_3987.IRI.Error) {
+                uri = try RFC_3987.IRI(fullURIString)
+            } catch {
                 throw RFC_8058.OneClickError.invalidURI(fullURIString)
             }
 
