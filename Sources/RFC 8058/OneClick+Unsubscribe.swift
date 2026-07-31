@@ -159,7 +159,7 @@ extension RFC_8058.OneClick {
         /// - Throws: `RFC_8058.OneClickError.invalidToken` if token is empty
         /// - Throws: `RFC_8058.OneClickError.invalidURI` if combined URI is invalid
         public init(
-            baseURL: any RFC_3987.IRI.Representable,
+            baseURL: some RFC_3987.IRI.Representable,
             opaqueToken: String
         ) throws(RFC_8058.OneClickError) {
             try self.init(baseURL: baseURL.iri, opaqueToken: opaqueToken)
