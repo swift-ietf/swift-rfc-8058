@@ -56,7 +56,9 @@ struct `README Verification` {
             // From README line 69
             let headers = [String: String](oneClickUnsubscribe: oneClick)
 
-            #expect(headers["List-Unsubscribe"]?.contains("https://example.com/unsubscribe") == true)
+            #expect(
+                headers["List-Unsubscribe"]?.contains("https://example.com/unsubscribe") == true
+            )
             #expect(headers["List-Unsubscribe-Post"] == "List-Unsubscribe=One-Click")
         }
 

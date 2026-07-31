@@ -107,7 +107,10 @@ struct `RFC 8058 One-Click Unsubscribe Tests` {
             )
 
             let encoded = try JSONEncoder().encode(original)
-            let decoded = try JSONDecoder().decode(RFC_8058.OneClick.Unsubscribe.self, from: encoded)
+            let decoded = try JSONDecoder().decode(
+                RFC_8058.OneClick.Unsubscribe.self,
+                from: encoded
+            )
 
             #expect(decoded.httpsURI == original.httpsURI)
             #expect(decoded.opaqueToken == original.opaqueToken)
