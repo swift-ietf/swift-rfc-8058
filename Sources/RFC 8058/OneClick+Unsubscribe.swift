@@ -149,6 +149,10 @@ extension RFC_8058.OneClick {
             self.httpsURI = uri
         }
 
+        // swift-linter:disable:next throwing wrapper init
+        // REASON: pure type-bridge convenience overload — forwards
+        // `IRI.Representable` to the `RFC_3987.IRI` validating init, which
+        // owns the invariant; no additional validation belongs here.
         /// Creates one-click unsubscribe with IRI.Representable base URL (convenience)
         ///
         /// - Parameters:
@@ -158,10 +162,6 @@ extension RFC_8058.OneClick {
         /// - Throws: `RFC_8058.OneClickError.requiresHTTPS` if URI is not HTTPS
         /// - Throws: `RFC_8058.OneClickError.invalidToken` if token is empty
         /// - Throws: `RFC_8058.OneClickError.invalidURI` if combined URI is invalid
-        // swift-linter:disable:next throwing wrapper init
-        // REASON: pure type-bridge convenience overload — forwards
-        // `IRI.Representable` to the `RFC_3987.IRI` validating init, which
-        // owns the invariant; no additional validation belongs here.
         public init(
             baseURL: some RFC_3987.IRI.Representable,
             opaqueToken: String
