@@ -10,8 +10,6 @@ struct `RFC 8058 One-Click Unsubscribe Tests` {
     @Suite
     struct Unit {
 
-        // MARK: - Initialization Tests
-
         @Test
         func `OneClick.Unsubscribe can be created with HTTPS URI`() throws {
             let baseURL = try RFC_3987.IRI("https://example.com/unsubscribe")
@@ -26,8 +24,6 @@ struct `RFC 8058 One-Click Unsubscribe Tests` {
             #expect(oneClick.httpsURI.value == "https://example.com/unsubscribe/abc123xyz")
         }
 
-        // MARK: - Header Rendering Tests
-
         @Test
         func `Renders RFC 8058 compliant headers`() throws {
             let oneClick = try RFC_8058.OneClick.Unsubscribe(
@@ -37,7 +33,6 @@ struct `RFC 8058 One-Click Unsubscribe Tests` {
 
             let headers = [String: String](oneClickUnsubscribe: oneClick)
 
-            // RFC 8058 Section 3: MUST have both headers
             #expect(headers.count == 2)
             #expect(headers["List-Unsubscribe"] == "<https://example.com/unsubscribe/token123>")
             #expect(headers["List-Unsubscribe-Post"] == "List-Unsubscribe=One-Click")
@@ -66,11 +61,8 @@ struct `RFC 8058 One-Click Unsubscribe Tests` {
 
             let headers = [String: String](oneClickUnsubscribe: oneClick)
 
-            // RFC 8058 Section 3: "List-Unsubscribe=One-Click" exactly
             #expect(headers["List-Unsubscribe-Post"] == "List-Unsubscribe=One-Click")
         }
-
-        // MARK: - Token Validation Tests
 
         @Test
         func `Token validation succeeds with correct token`() throws {
@@ -97,8 +89,6 @@ struct `RFC 8058 One-Click Unsubscribe Tests` {
             #expect(isValid == false)
         }
 
-        // MARK: - Codable Tests
-
         @Test
         func `OneClick.Unsubscribe is Codable`() throws {
             let original = try RFC_8058.OneClick.Unsubscribe(
@@ -115,8 +105,6 @@ struct `RFC 8058 One-Click Unsubscribe Tests` {
             #expect(decoded.httpsURI == original.httpsURI)
             #expect(decoded.opaqueToken == original.opaqueToken)
         }
-
-        // MARK: - Hashable Tests
 
         @Test
         func `OneClick.Unsubscribe is Hashable`() throws {
@@ -146,8 +134,6 @@ struct `RFC 8058 One-Click Unsubscribe Tests` {
             #expect(set.count == 2)
         }
 
-        // MARK: - Sendable Tests
-
         @Test
         func `OneClick.Unsubscribe is Sendable`() async throws {
             let oneClick = try RFC_8058.OneClick.Unsubscribe(
@@ -157,7 +143,7 @@ struct `RFC 8058 One-Click Unsubscribe Tests` {
 
             await withCheckedContinuation { continuation in
                 Task {
-                    let _ = oneClick  // Can use in async context
+                    let _ = oneClick
                     continuation.resume()
                 }
             }
@@ -225,33 +211,25 @@ struct `RFC 8058 One-Click Unsubscribe Tests` {
 
         @Test
         func `Token validation uses constant-time comparison`() throws {
-            // This test verifies that validation is constant-time by checking
-            // that tokens of the same length take similar time regardless of
-            // how many characters match
 
-            let token = "abcdefghijklmnop"  // 16 chars
+            let token = "abcdefghijklmnop"
             let oneClick = try RFC_8058.OneClick.Unsubscribe(
                 baseURL: try RFC_3987.IRI("https://example.com/unsubscribe"),
                 opaqueToken: token
             )
 
-            // All different
             let allDifferent = "xxxxxxxxxxxxxxxx"
             let result1 = oneClick.validate(token: allDifferent)
             #expect(result1 == false)
 
-            // First char matches
             let firstMatches = "axxxxxxxxxxxxxxx"
             let result2 = oneClick.validate(token: firstMatches)
             #expect(result2 == false)
 
-            // All but last match
             let almostMatches = "abcdefghijklmnox"
             let result3 = oneClick.validate(token: almostMatches)
             #expect(result3 == false)
 
-            // Verification that all false cases behave consistently
-            // (constant-time comparison ensures timing doesn't reveal which chars match)
         }
 
         @Test
@@ -268,7 +246,7 @@ struct `RFC 8058 One-Click Unsubscribe Tests` {
 
         @Test
         func `Opaque token should be URL-safe`() throws {
-            // Common URL-safe characters
+
             let urlSafeToken = "abc123-_."
 
             let oneClick = try RFC_8058.OneClick.Unsubscribe(
@@ -281,7 +259,7 @@ struct `RFC 8058 One-Click Unsubscribe Tests` {
 
         @Test
         func `Typical HMAC-based token works`() throws {
-            // Simulate base64url-encoded HMAC token
+
             let hmacToken = "dGVzdEBleGFtcGxlLmNvbTpuZXdzbGV0dGVy"
 
             let oneClick = try RFC_8058.OneClick.Unsubscribe(
@@ -313,8 +291,6 @@ struct `RFC 8058 One-Click Unsubscribe Tests` {
 
         @Test
         func `Can be combined with RFC 2369 List-Unsubscribe`() throws {
-            // Note: This test demonstrates how RFC 8058 extends RFC 2369
-            // Both List-Unsubscribe headers can coexist
 
             let oneClick = try RFC_8058.OneClick.Unsubscribe(
                 baseURL: try RFC_3987.IRI("https://example.com/unsubscribe"),
@@ -323,22 +299,17 @@ struct `RFC 8058 One-Click Unsubscribe Tests` {
 
             let headers = [String: String](oneClickUnsubscribe: oneClick)
 
-            // RFC 8058 provides enhanced List-Unsubscribe with POST capability
-            // Email clients that support RFC 8058 will use the one-click functionality
-            // Email clients that only support RFC 2369 will open the URL in a browser
-
             #expect(headers["List-Unsubscribe"]?.contains("https://") == true)
             #expect(headers["List-Unsubscribe-Post"] != nil)
         }
 
         @Test
         func `Realistic unsubscribe workflow`() throws {
-            // Simulate real-world token generation
+
             let subscriber = "user@example.com"
             let list = "newsletter"
             let secret = "secret-key-12345"
 
-            // In production, use HMAC-SHA256 or similar
             let tokenData = "\(subscriber):\(list):\(secret)"
             let token = tokenData.data(using: .utf8)!
                 .base64EncodedString()
@@ -346,19 +317,16 @@ struct `RFC 8058 One-Click Unsubscribe Tests` {
                 .replacing("/", with: "_")
                 .replacing("=", with: "")
 
-            // Create one-click unsubscribe
             let oneClick = try RFC_8058.OneClick.Unsubscribe(
                 baseURL: try RFC_3987.IRI("https://example.com/api/unsubscribe"),
                 opaqueToken: token
             )
 
-            // Render headers for email
             let headers = [String: String](oneClickUnsubscribe: oneClick)
 
             #expect(headers["List-Unsubscribe"]?.contains(token) == true)
             #expect(headers["List-Unsubscribe-Post"] == "List-Unsubscribe=One-Click")
 
-            // Later, when request comes in with token
             let requestToken = token
             #expect(oneClick.validate(token: requestToken) == true)
         }

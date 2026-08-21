@@ -1,5 +1,5 @@
 extension RFC_8058 {
-    /// Errors that can occur when working with one-click unsubscribe
+
     public enum OneClickError: Swift.Error, Hashable, Sendable {
         case requiresHTTPS
         case invalidToken(String)
@@ -7,8 +7,6 @@ extension RFC_8058 {
         case invalidURI(String)
     }
 }
-
-// MARK: - CustomStringConvertible Conformance
 
 extension RFC_8058.OneClickError: CustomStringConvertible {
     public var description: String {

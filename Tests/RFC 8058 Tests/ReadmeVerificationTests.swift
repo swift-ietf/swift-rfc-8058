@@ -12,7 +12,7 @@ struct `README Verification` {
 
         @Test
         func `Example from README: Creating One-Click Unsubscribe`() throws {
-            // Simplified from README line 36-63 (without CryptoKit for test simplicity)
+
             let token = "secure-token-123"
 
             let oneClick = try RFC_8058.OneClick.Unsubscribe(
@@ -36,7 +36,6 @@ struct `README Verification` {
                 opaqueToken: token
             )
 
-            // From README line 89 - validate method
             #expect(oneClick.validate(token: token) == true)
             #expect(oneClick.validate(token: "wrong-token") == false)
         }
@@ -53,7 +52,6 @@ struct `README Verification` {
                 opaqueToken: token
             )
 
-            // From README line 69
             let headers = [String: String](oneClickUnsubscribe: oneClick)
 
             #expect(
@@ -62,16 +60,5 @@ struct `README Verification` {
             #expect(headers["List-Unsubscribe-Post"] == "List-Unsubscribe=One-Click")
         }
 
-        //
-        //    @Test
-        //    func `Example from README: Using Foundation URLs`() throws {
-        //        // From README line 101-107
-        //        let oneClick = try RFC_8058.OneClick.Unsubscribe(
-        //            baseURL: URL(string: "https://example.com/unsubscribe")!,
-        //            opaqueToken: "secureToken"
-        //        )
-        //
-        //        #expect(oneClick.httpsURI.value.contains("https://example.com/unsubscribe"))
-        //    }
     }
 }
