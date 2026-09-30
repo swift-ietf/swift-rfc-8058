@@ -13,7 +13,7 @@ extension RFC_8058.OneClick {
             opaqueToken: String
         ) throws(RFC_8058.OneClickError) {
 
-            guard baseURL.value.hasPrefix("https://") else {
+            guard baseURL.value.prefix(8).lowercased() == "https://" else {
                 throw RFC_8058.OneClickError.requiresHTTPS
             }
 
