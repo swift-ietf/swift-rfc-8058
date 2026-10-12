@@ -16,7 +16,7 @@ struct `README Verification` {
             let token = "secure-token-123"
 
             let oneClick = try RFC_8058.OneClick.Unsubscribe(
-                baseURL: try RFC_3987.IRI("https://example.com/unsubscribe"),
+                baseURL: RFC_3987.IRI("https://example.com/unsubscribe"),
                 opaqueToken: token
             )
 
@@ -48,7 +48,7 @@ struct `README Verification` {
         func `Example from README: Rendering Email Headers`() throws {
             let token = "token123"
             let oneClick = try RFC_8058.OneClick.Unsubscribe(
-                baseURL: try RFC_3987.IRI("https://example.com/unsubscribe"),
+                baseURL: RFC_3987.IRI("https://example.com/unsubscribe"),
                 opaqueToken: token
             )
 

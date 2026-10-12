@@ -1,6 +1,6 @@
 extension RFC_8058 {
 
-    public enum OneClickError: Swift.Error, Hashable, Sendable {
+    public enum OneClickError: Swift::Error, Hashable, Sendable {
         case requiresHTTPS
         case invalidToken(String)
         case tokenMismatch

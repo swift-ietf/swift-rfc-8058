@@ -12,7 +12,7 @@ struct `RFC 8058 One-Click Unsubscribe Tests` {
 
         @Test
         func `OneClick.Unsubscribe can be created with HTTPS URI`() throws {
-            let baseURL = try RFC_3987.IRI("https://example.com/unsubscribe")
+            let baseURL = RFC_3987.IRI("https://example.com/unsubscribe")
             let token = "abc123xyz"
 
             let oneClick = try RFC_8058.OneClick.Unsubscribe(
@@ -27,7 +27,7 @@ struct `RFC 8058 One-Click Unsubscribe Tests` {
         @Test
         func `Renders RFC 8058 compliant headers`() throws {
             let oneClick = try RFC_8058.OneClick.Unsubscribe(
-                baseURL: try RFC_3987.IRI("https://example.com/unsubscribe"),
+                baseURL: RFC_3987.IRI("https://example.com/unsubscribe"),
                 opaqueToken: "token123"
             )
 
@@ -41,7 +41,7 @@ struct `RFC 8058 One-Click Unsubscribe Tests` {
         @Test
         func `List-Unsubscribe header uses angle brackets per RFC 2369`() throws {
             let oneClick = try RFC_8058.OneClick.Unsubscribe(
-                baseURL: try RFC_3987.IRI("https://example.com/unsubscribe"),
+                baseURL: RFC_3987.IRI("https://example.com/unsubscribe"),
                 opaqueToken: "abc"
             )
 
@@ -55,7 +55,7 @@ struct `RFC 8058 One-Click Unsubscribe Tests` {
         @Test
         func `List-Unsubscribe-Post has exact value per RFC 8058`() throws {
             let oneClick = try RFC_8058.OneClick.Unsubscribe(
-                baseURL: try RFC_3987.IRI("https://example.com/unsubscribe"),
+                baseURL: RFC_3987.IRI("https://example.com/unsubscribe"),
                 opaqueToken: "token"
             )
 
@@ -68,7 +68,7 @@ struct `RFC 8058 One-Click Unsubscribe Tests` {
         func `Token validation succeeds with correct token`() throws {
             let token = "correct-token-123"
             let oneClick = try RFC_8058.OneClick.Unsubscribe(
-                baseURL: try RFC_3987.IRI("https://example.com/unsubscribe"),
+                baseURL: RFC_3987.IRI("https://example.com/unsubscribe"),
                 opaqueToken: token
             )
 
@@ -80,7 +80,7 @@ struct `RFC 8058 One-Click Unsubscribe Tests` {
         @Test
         func `Token validation fails with incorrect token`() throws {
             let oneClick = try RFC_8058.OneClick.Unsubscribe(
-                baseURL: try RFC_3987.IRI("https://example.com/unsubscribe"),
+                baseURL: RFC_3987.IRI("https://example.com/unsubscribe"),
                 opaqueToken: "correct-token"
             )
 
@@ -92,7 +92,7 @@ struct `RFC 8058 One-Click Unsubscribe Tests` {
         @Test
         func `OneClick.Unsubscribe is Codable`() throws {
             let original = try RFC_8058.OneClick.Unsubscribe(
-                baseURL: try RFC_3987.IRI("https://example.com/unsubscribe"),
+                baseURL: RFC_3987.IRI("https://example.com/unsubscribe"),
                 opaqueToken: "test-token-123"
             )
 
@@ -109,17 +109,17 @@ struct `RFC 8058 One-Click Unsubscribe Tests` {
         @Test
         func `OneClick.Unsubscribe is Hashable`() throws {
             let oneClick1 = try RFC_8058.OneClick.Unsubscribe(
-                baseURL: try RFC_3987.IRI("https://example.com/unsubscribe"),
+                baseURL: RFC_3987.IRI("https://example.com/unsubscribe"),
                 opaqueToken: "token123"
             )
 
             let oneClick2 = try RFC_8058.OneClick.Unsubscribe(
-                baseURL: try RFC_3987.IRI("https://example.com/unsubscribe"),
+                baseURL: RFC_3987.IRI("https://example.com/unsubscribe"),
                 opaqueToken: "token123"
             )
 
             let oneClick3 = try RFC_8058.OneClick.Unsubscribe(
-                baseURL: try RFC_3987.IRI("https://example.com/unsubscribe"),
+                baseURL: RFC_3987.IRI("https://example.com/unsubscribe"),
                 opaqueToken: "different-token"
             )
 
@@ -137,7 +137,7 @@ struct `RFC 8058 One-Click Unsubscribe Tests` {
         @Test
         func `OneClick.Unsubscribe is Sendable`() async throws {
             let oneClick = try RFC_8058.OneClick.Unsubscribe(
-                baseURL: try RFC_3987.IRI("https://example.com/unsubscribe"),
+                baseURL: RFC_3987.IRI("https://example.com/unsubscribe"),
                 opaqueToken: "token"
             )
 
@@ -155,7 +155,7 @@ struct `RFC 8058 One-Click Unsubscribe Tests` {
 
         @Test
         func `OneClick.Unsubscribe throws error for non-HTTPS URI`() throws {
-            let httpURL = try RFC_3987.IRI("http://example.com/unsubscribe")
+            let httpURL = RFC_3987.IRI("http://example.com/unsubscribe")
 
             #expect(throws: RFC_8058.OneClickError.self) {
                 try RFC_8058.OneClick.Unsubscribe(
@@ -167,7 +167,7 @@ struct `RFC 8058 One-Click Unsubscribe Tests` {
 
         @Test
         func `OneClick.Unsubscribe throws error for empty token`() throws {
-            let baseURL = try RFC_3987.IRI("https://example.com/unsubscribe")
+            let baseURL = RFC_3987.IRI("https://example.com/unsubscribe")
 
             #expect(throws: RFC_8058.OneClickError.self) {
                 try RFC_8058.OneClick.Unsubscribe(
@@ -179,8 +179,8 @@ struct `RFC 8058 One-Click Unsubscribe Tests` {
 
         @Test
         func `OneClick.Unsubscribe handles base URL with trailing slash`() throws {
-            let baseWithSlash = try RFC_3987.IRI("https://example.com/unsubscribe/")
-            let baseWithoutSlash = try RFC_3987.IRI("https://example.com/unsubscribe")
+            let baseWithSlash = RFC_3987.IRI("https://example.com/unsubscribe/")
+            let baseWithoutSlash = RFC_3987.IRI("https://example.com/unsubscribe")
             let token = "abc123"
 
             let oneClick1 = try RFC_8058.OneClick.Unsubscribe(
@@ -200,7 +200,7 @@ struct `RFC 8058 One-Click Unsubscribe Tests` {
         @Test
         func `Token validation fails with different length token`() throws {
             let oneClick = try RFC_8058.OneClick.Unsubscribe(
-                baseURL: try RFC_3987.IRI("https://example.com/unsubscribe"),
+                baseURL: RFC_3987.IRI("https://example.com/unsubscribe"),
                 opaqueToken: "short"
             )
 
@@ -214,7 +214,7 @@ struct `RFC 8058 One-Click Unsubscribe Tests` {
 
             let token = "abcdefghijklmnop"
             let oneClick = try RFC_8058.OneClick.Unsubscribe(
-                baseURL: try RFC_3987.IRI("https://example.com/unsubscribe"),
+                baseURL: RFC_3987.IRI("https://example.com/unsubscribe"),
                 opaqueToken: token
             )
 
@@ -235,7 +235,7 @@ struct `RFC 8058 One-Click Unsubscribe Tests` {
         @Test
         func `Token validation with empty string`() throws {
             let oneClick = try RFC_8058.OneClick.Unsubscribe(
-                baseURL: try RFC_3987.IRI("https://example.com/unsubscribe"),
+                baseURL: RFC_3987.IRI("https://example.com/unsubscribe"),
                 opaqueToken: "valid-token"
             )
 
@@ -250,7 +250,7 @@ struct `RFC 8058 One-Click Unsubscribe Tests` {
             let urlSafeToken = "abc123-_."
 
             let oneClick = try RFC_8058.OneClick.Unsubscribe(
-                baseURL: try RFC_3987.IRI("https://example.com/unsubscribe"),
+                baseURL: RFC_3987.IRI("https://example.com/unsubscribe"),
                 opaqueToken: urlSafeToken
             )
 
@@ -263,7 +263,7 @@ struct `RFC 8058 One-Click Unsubscribe Tests` {
             let hmacToken = "dGVzdEBleGFtcGxlLmNvbTpuZXdzbGV0dGVy"
 
             let oneClick = try RFC_8058.OneClick.Unsubscribe(
-                baseURL: try RFC_3987.IRI("https://example.com/unsubscribe"),
+                baseURL: RFC_3987.IRI("https://example.com/unsubscribe"),
                 opaqueToken: hmacToken
             )
 
@@ -293,7 +293,7 @@ struct `RFC 8058 One-Click Unsubscribe Tests` {
         func `Can be combined with RFC 2369 List-Unsubscribe`() throws {
 
             let oneClick = try RFC_8058.OneClick.Unsubscribe(
-                baseURL: try RFC_3987.IRI("https://example.com/unsubscribe"),
+                baseURL: RFC_3987.IRI("https://example.com/unsubscribe"),
                 opaqueToken: "token123"
             )
 
@@ -318,7 +318,7 @@ struct `RFC 8058 One-Click Unsubscribe Tests` {
                 .replacing("=", with: "")
 
             let oneClick = try RFC_8058.OneClick.Unsubscribe(
-                baseURL: try RFC_3987.IRI("https://example.com/api/unsubscribe"),
+                baseURL: RFC_3987.IRI("https://example.com/api/unsubscribe"),
                 opaqueToken: token
             )
 
