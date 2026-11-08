@@ -24,11 +24,12 @@ extension RFC_8058.OneClick {
             self.opaqueToken = opaqueToken
 
             let fullURIString: String
-            fullURIString = if baseURL.value.hasSuffix("/") {
-                "\(baseURL.value)\(opaqueToken)"
-            } else {
-                "\(baseURL.value)/\(opaqueToken)"
-            }
+            fullURIString =
+                if baseURL.value.hasSuffix("/") {
+                    "\(baseURL.value)\(opaqueToken)"
+                } else {
+                    "\(baseURL.value)/\(opaqueToken)"
+                }
 
             let uri: RFC_3987.IRI
             do throws(RFC_3987.IRI.Error) {
