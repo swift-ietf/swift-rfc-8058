@@ -2,7 +2,7 @@ import RFC_3987
 
 extension RFC_8058.OneClick {
 
-    public struct Unsubscribe: Hashable, Sendable, Codable {
+    public struct Unsubscribe: Hashable, Sendable {
 
         public let httpsURI: RFC_3987.IRI
 
@@ -53,7 +53,7 @@ extension RFC_8058.OneClick {
     }
 }
 
-extension RFC_8058.OneClick.Unsubscribe {
+extension RFC_8058.OneClick.Unsubscribe: Codable {
 
     private enum CodingKeys: String, CodingKey {
         case httpsURI
