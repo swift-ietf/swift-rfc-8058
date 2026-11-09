@@ -54,7 +54,7 @@ extension RFC_8058.OneClick.Unsubscribe {
 
     public func validate(token: String) -> Bool {
 
-        guard token.count == opaqueToken.count else { return false }
+        guard token.utf8.count == opaqueToken.utf8.count else { return false }
 
         var result = 0
         for (a, b) in zip(token.utf8, opaqueToken.utf8) {

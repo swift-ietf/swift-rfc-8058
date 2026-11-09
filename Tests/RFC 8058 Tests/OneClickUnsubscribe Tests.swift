@@ -236,6 +236,16 @@ extension `OneClickUnsubscribe Tests` {
             }
 
             @Test
+            func `Token validation fails when stored token is a byte prefix with equal Character count`() throws {
+                let oneClick = try RFC_8058.OneClick.Unsubscribe(
+                    baseURL: RFC_3987.IRI("https://example.com/unsubscribe"),
+                    opaqueToken: "a"
+                )
+
+                #expect(oneClick.validate(token: "a\u{0301}") == false)
+            }
+
+            @Test
             func `Token validation with empty string`() throws {
                 let oneClick = try RFC_8058.OneClick.Unsubscribe(
                     baseURL: RFC_3987.IRI("https://example.com/unsubscribe"),
