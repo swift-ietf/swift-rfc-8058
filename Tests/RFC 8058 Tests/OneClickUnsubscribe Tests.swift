@@ -270,6 +270,27 @@ extension `OneClickUnsubscribe Tests` {
                 #expect(oneClick.httpsURI.value.contains(urlSafeToken))
             }
 
+            @Test(arguments: ["a/b", "a?b", "a#b", "a b", "a%20b", "a&b=c", "caf\u{00E9}", "../x"])
+            func `Token with characters outside RFC 3986 unreserved is rejected`(token: String) throws {
+                #expect(throws: RFC_8058.OneClickError.invalidToken(token)) {
+                    try RFC_8058.OneClick.Unsubscribe(
+                        baseURL: RFC_3987.IRI("https://example.com/unsubscribe"),
+                        opaqueToken: token
+                    )
+                }
+            }
+
+            @Test
+            func `Token with every unreserved character is accepted verbatim`() throws {
+                let token = "AZaz09-._~"
+                let oneClick = try RFC_8058.OneClick.Unsubscribe(
+                    baseURL: RFC_3987.IRI("https://example.com/unsubscribe"),
+                    opaqueToken: token
+                )
+
+                #expect(oneClick.httpsURI.value == "https://example.com/unsubscribe/AZaz09-._~")
+            }
+
             @Test
             func `Typical HMAC-based token works`() throws {
 

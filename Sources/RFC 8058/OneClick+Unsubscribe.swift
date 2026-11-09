@@ -17,7 +17,10 @@ extension RFC_8058.OneClick {
                 throw RFC_8058.OneClickError.requiresHTTPS
             }
 
-            guard !opaqueToken.isEmpty else {
+            guard
+                !opaqueToken.isEmpty,
+                opaqueToken.utf8.allSatisfy(Self.isUnreserved)
+            else {
                 throw RFC_8058.OneClickError.invalidToken(opaqueToken)
             }
 
@@ -46,6 +49,21 @@ extension RFC_8058.OneClick {
             opaqueToken: String
         ) throws(RFC_8058.OneClickError) {
             try self.init(baseURL: baseURL.iri, opaqueToken: opaqueToken)
+        }
+    }
+}
+
+extension RFC_8058.OneClick.Unsubscribe {
+
+    private static func isUnreserved(_ byte: UInt8) -> Bool {
+        switch byte {
+        case UInt8(ascii: "A")...UInt8(ascii: "Z"),
+            UInt8(ascii: "a")...UInt8(ascii: "z"),
+            UInt8(ascii: "0")...UInt8(ascii: "9"),
+            UInt8(ascii: "-"), UInt8(ascii: "."), UInt8(ascii: "_"), UInt8(ascii: "~"):
+            true
+        default:
+            false
         }
     }
 }
