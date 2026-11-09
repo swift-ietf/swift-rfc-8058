@@ -245,6 +245,40 @@ extension `OneClickUnsubscribe Tests` {
                 #expect(oneClick.validate(token: "a\u{0301}") == false)
             }
 
+            @Test(arguments: [
+                #"{"httpsURI":"http://example.com/unsubscribe/token","opaqueToken":"token"}"#,
+                #"{"httpsURI":"https://example.com/unsubscribe/other","opaqueToken":"token"}"#,
+                #"{"httpsURI":"https://example.com/unsubscribetoken","opaqueToken":"token"}"#,
+                #"{"httpsURI":"https://example.com/unsubscribe/a/b","opaqueToken":"a/b"}"#,
+                #"{"httpsURI":"https://example.com/unsubscribe/","opaqueToken":""}"#,
+            ])
+            func `Decoding rejects values the initializer would refuse`(json: String) throws {
+                #expect(throws: DecodingError.self) {
+                    try JSONDecoder().decode(
+                        RFC_8058.OneClick.Unsubscribe.self,
+                        from: Data(json.utf8)
+                    )
+                }
+            }
+
+            @Test
+            func `Decoding accepts a value derived from its base and token`() throws {
+                let json = #"{"httpsURI":"https://example.com/unsubscribe/token","opaqueToken":"token"}"#
+
+                let decoded = try JSONDecoder().decode(
+                    RFC_8058.OneClick.Unsubscribe.self,
+                    from: Data(json.utf8)
+                )
+
+                #expect(
+                    decoded
+                        == (try RFC_8058.OneClick.Unsubscribe(
+                            baseURL: RFC_3987.IRI("https://example.com/unsubscribe"),
+                            opaqueToken: "token"
+                        ))
+                )
+            }
+
             @Test
             func `Token validation with empty string`() throws {
                 let oneClick = try RFC_8058.OneClick.Unsubscribe(

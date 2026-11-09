@@ -55,6 +55,51 @@ extension RFC_8058.OneClick {
 
 extension RFC_8058.OneClick.Unsubscribe {
 
+    private enum CodingKeys: String, CodingKey {
+        case httpsURI
+        case opaqueToken
+    }
+
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let httpsURI = try container.decode(RFC_3987.IRI.self, forKey: .httpsURI)
+        let opaqueToken = try container.decode(String.self, forKey: .opaqueToken)
+        let suffix = "/\(opaqueToken)"
+        guard httpsURI.value.hasSuffix(suffix) else {
+            throw DecodingError.dataCorruptedError(
+                forKey: .httpsURI,
+                in: container,
+                debugDescription: "URI '\(httpsURI.value)' does not end in its opaque token '\(opaqueToken)'."
+            )
+        }
+        let baseURLString = String(decoding: httpsURI.value.utf8.dropLast(suffix.utf8.count), as: UTF8.self)
+        do {
+            try self.init(baseURL: RFC_3987.IRI(baseURLString), opaqueToken: opaqueToken)
+        } catch let error as RFC_8058.OneClickError {
+            throw DecodingError.dataCorruptedError(
+                forKey: .httpsURI,
+                in: container,
+                debugDescription: error.description
+            )
+        } catch {
+            throw DecodingError.dataCorruptedError(
+                forKey: .httpsURI,
+                in: container,
+                debugDescription: "Invalid base URI '\(baseURLString)'."
+            )
+        }
+        guard self.httpsURI == httpsURI else {
+            throw DecodingError.dataCorruptedError(
+                forKey: .httpsURI,
+                in: container,
+                debugDescription: "URI '\(httpsURI.value)' is not the URI derived from its base and opaque token."
+            )
+        }
+    }
+}
+
+extension RFC_8058.OneClick.Unsubscribe {
+
     private static func isUnreserved(_ byte: UInt8) -> Bool {
         switch byte {
         case UInt8(ascii: "A")...UInt8(ascii: "Z"),
